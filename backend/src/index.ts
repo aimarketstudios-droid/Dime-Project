@@ -10,6 +10,7 @@ import subscriptionRoutes from './routes/subscriptions';
 import marketplaceRoutes from './routes/marketplace';
 import feedbackRoutes from './routes/feedback';
 import adminRoutes from './routes/admin';
+import downloadRoutes from './routes/download';
 
 const app: express.Express = express();
 
@@ -38,6 +39,7 @@ app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/admin', adminRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/download', downloadRoutes);
 
 // 404 Catch-all
 app.use((_req: express.Request, res: express.Response) => {
