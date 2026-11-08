@@ -9,6 +9,9 @@ jobs:
   build-apk:
     name: Generate Standalone Android APK
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4608m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError"
 
     steps:
       - name: Checkout Code
@@ -19,6 +22,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,7 +43,7 @@ jobs:
         run: |
           cd mobile/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx4608m -XX:MaxMetaspaceSize=1024m"
 
       - name: Upload APK to GitHub Releases
         uses: softprops/action-gh-release@v2
@@ -52,4 +56,3 @@ jobs:
           files: mobile/android/app/build/outputs/apk/debug/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
