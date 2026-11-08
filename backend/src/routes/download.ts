@@ -86,8 +86,8 @@ router.get('/dime.apk', (_req: Request, res: Response) => {
     return res.download(apkPath, 'Dime-App-v1.0.0.apk');
   }
 
-  // If APK binary hasn't been built and dropped into /public yet, redirect to EAS build download link
-  return res.redirect('https://github.com/aimarketstudios-droid/Dime-Project/releases');
+  // Redirect to GitHub release APK download
+  return res.redirect('https://github.com/aimarketstudios-droid/Dime-Project/releases/download/v1.0.0/app-debug.apk');
 });
 
 export default router;
