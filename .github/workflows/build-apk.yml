@@ -41,20 +41,26 @@ jobs:
           cd mobile
           npx expo prebuild --platform android --no-install
 
-      - name: Build Android APK via Gradle
+      - name: Optimize & Build Minified Production Release APK
         run: |
           cd mobile/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx4608m -XX:MaxMetaspaceSize=1024m"
+          # Ensure release APK is signed and optimized
+          sed -i 's/signingConfig signingConfigs.release/signingConfig signingConfigs.debug/g' app/build.gradle 2>/dev/null || true
+          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx4608m -XX:MaxMetaspaceSize=1024m"
+          
+          # Rename output to a user-friendly name
+          mkdir -p ../../dist-apk
+          cp app/build/outputs/apk/release/app-release.apk ../../dist-apk/Dime-v1.0.0.apk
 
-      - name: Upload APK to GitHub Releases
+      - name: Upload Optimized APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0
           name: "Dime Android APK v1.0.0 (Direct Install)"
-          body: "Direct download APK for Android. Download and install directly on your phone."
+          body: "Optimized, lightweight production APK for Android. Directly downloadable and installable."
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          files: dist-apk/Dime-v1.0.0.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

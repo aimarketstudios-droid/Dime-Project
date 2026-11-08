@@ -87,7 +87,7 @@ router.get('/dime.apk', (_req: Request, res: Response) => {
   }
 
   // Redirect to GitHub release APK download
-  return res.redirect('https://github.com/aimarketstudios-droid/Dime-Project/releases/download/v1.0.0/app-debug.apk');
+  return res.redirect('https://github.com/aimarketstudios-droid/Dime-Project/releases/download/v1.0.0/Dime-v1.0.0.apk');
 });
 
 export default router;
