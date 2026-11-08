@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:4000/api';
+export const API_BASE_URL = 'https://dime-project.onrender.com/api';
 
 export interface Subscription {
   id: string;
