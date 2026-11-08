@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 1. Dime Backend API
+  dime-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dime-api
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgrespassword@dime-postgres:5432/dime_db
+      - REDIS_URL=redis://dime-redis:6379
+      - JWT_SECRET=production_dime_fintech_master_secret_2026
+      - ALLOWED_ORIGINS=*
+    depends_on:
+      - dime-postgres
+      - dime-redis
+
+  # 2. PostgreSQL Relational Ledger
+  dime-postgres:
+    image: postgres:16-alpine
+    container_name: dime-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespassword
+      - POSTGRES_DB=dime_db
+    volumes:
+      - dime_postgres_data:/var/lib/postgresql/data
+
+  # 3. Redis Queue & Worker Broker
+  dime-redis:
+    image: redis:7-alpine
+    container_name: dime-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - dime_redis_data:/data
+
+volumes:
+  dime_postgres_data:
+  dime_redis_data:
+
