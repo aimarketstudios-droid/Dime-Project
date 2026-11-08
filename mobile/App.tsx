@@ -16,6 +16,7 @@ import { KillConfirmModal } from './src/components/KillConfirmModal';
 import { TwoFactorModal } from './src/components/TwoFactorModal';
 import { BankLinkModal } from './src/components/BankLinkModal';
 import { FeedbackModal } from './src/components/FeedbackModal';
+import { AddSubscriptionModal } from './src/components/AddSubscriptionModal';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'subscriptions' | 'marketplace'>('dashboard');
@@ -37,6 +38,7 @@ export default function App() {
   const [otpPromptFor, setOtpPromptFor] = useState<string>('');
   const [bankLinkVisible, setBankLinkVisible] = useState(false);
   const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
 
   const loadData = async () => {
     try {
@@ -138,6 +140,7 @@ export default function App() {
             subscriptions={subscriptions}
             onKillPress={handleKillPress}
             onConnectBank={() => setBankLinkVisible(true)}
+            onAddPress={() => setAddModalVisible(true)}
             onOpenFeedback={() => setFeedbackVisible(true)}
             onRefresh={loadData}
             refreshing={refreshing}
@@ -147,6 +150,7 @@ export default function App() {
           <SubscriptionsScreen
             subscriptions={subscriptions}
             onKillPress={handleKillPress}
+            onAddPress={() => setAddModalVisible(true)}
           />
         )}
         {activeTab === 'marketplace' && (
@@ -213,6 +217,16 @@ export default function App() {
       <FeedbackModal
         visible={feedbackVisible}
         onClose={() => setFeedbackVisible(false)}
+      />
+
+      {/* Manual Add Subscription Modal */}
+      <AddSubscriptionModal
+        visible={addModalVisible}
+        onSuccess={() => {
+          loadData();
+          Alert.alert('Subscription Added', 'Added to your Kill List and recalculated monthly bleed.');
+        }}
+        onClose={() => setAddModalVisible(false)}
       />
     </SafeAreaView>
   );

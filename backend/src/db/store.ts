@@ -118,86 +118,8 @@ class DatabaseStore {
     };
     this.bankConnections.set(bankConn.id, bankConn);
 
-    // 3. Demo Subscriptions
-    const subs: Subscription[] = [
-      {
-        id: 'sub_netflix_01',
-        userId: demoUser.id,
-        merchantName: 'Netflix Standard',
-        category: 'Streaming',
-        billingAmount: 19.99,
-        currency: 'USD',
-        billingCycle: 'monthly',
-        confidenceScore: 0.98,
-        status: 'active',
-        daysInactive: 42,
-        cancellationMethod: 'headless_portal',
-        nextBillingDate: new Date(Date.now() + 4 * 86400000).toISOString().split('T')[0],
-        createdAt: new Date(Date.now() - 180 * 86400000).toISOString(),
-      },
-      {
-        id: 'sub_planet_fitness_02',
-        userId: demoUser.id,
-        merchantName: 'Planet Fitness Black Card',
-        category: 'Fitness',
-        billingAmount: 24.99,
-        currency: 'USD',
-        billingCycle: 'monthly',
-        confidenceScore: 0.95,
-        status: 'active',
-        daysInactive: 78,
-        cancellationMethod: 'legal_notice',
-        nextBillingDate: new Date(Date.now() + 11 * 86400000).toISOString().split('T')[0],
-        createdAt: new Date(Date.now() - 240 * 86400000).toISOString(),
-      },
-      {
-        id: 'sub_adobe_03',
-        userId: demoUser.id,
-        merchantName: 'Adobe Creative Cloud',
-        category: 'Software',
-        billingAmount: 54.99,
-        currency: 'USD',
-        billingCycle: 'monthly',
-        confidenceScore: 0.99,
-        status: 'active',
-        daysInactive: 65,
-        cancellationMethod: 'headless_portal',
-        nextBillingDate: new Date(Date.now() + 8 * 86400000).toISOString().split('T')[0],
-        createdAt: new Date(Date.now() - 365 * 86400000).toISOString(),
-      },
-      {
-        id: 'sub_chegg_04',
-        userId: demoUser.id,
-        merchantName: 'Chegg Study Pack',
-        category: 'Software',
-        billingAmount: 19.95,
-        currency: 'USD',
-        billingCycle: 'monthly',
-        confidenceScore: 0.94,
-        status: 'active',
-        daysInactive: 95,
-        cancellationMethod: 'headless_portal',
-        nextBillingDate: new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0],
-        createdAt: new Date(Date.now() - 120 * 86400000).toISOString(),
-      },
-      {
-        id: 'sub_spotify_05',
-        userId: demoUser.id,
-        merchantName: 'Spotify Premium Family',
-        category: 'Streaming',
-        billingAmount: 16.99,
-        currency: 'USD',
-        billingCycle: 'monthly',
-        confidenceScore: 0.99,
-        status: 'active',
-        daysInactive: 2,
-        cancellationMethod: 'direct_mandate',
-        nextBillingDate: new Date(Date.now() + 22 * 86400000).toISOString().split('T')[0],
-        createdAt: new Date(Date.now() - 400 * 86400000).toISOString(),
-      },
-    ];
-
-    subs.forEach((s) => this.subscriptions.set(s.id, s));
+    // 3. Subscriptions start completely empty (real user data only)
+    // Users can connect banks or add subscriptions manually.
 
     // 4. Demo Marketplace Offers
     const offers: MarketplaceOffer[] = [

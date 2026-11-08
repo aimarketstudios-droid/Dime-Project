@@ -6,9 +6,10 @@ import { SubscriptionCard } from '../components/SubscriptionCard';
 interface Props {
   subscriptions: Subscription[];
   onKillPress: (sub: Subscription) => void;
+  onAddPress: () => void;
 }
 
-export const SubscriptionsScreen: React.FC<Props> = ({ subscriptions, onKillPress }) => {
+export const SubscriptionsScreen: React.FC<Props> = ({ subscriptions, onKillPress, onAddPress }) => {
   const [filter, setFilter] = useState<'all' | 'dead' | 'active' | 'cancelled'>('all');
 
   const filtered = subscriptions.filter((s) => {
@@ -38,7 +39,14 @@ export const SubscriptionsScreen: React.FC<Props> = ({ subscriptions, onKillPres
       <ScrollView contentContainerStyle={styles.content}>
         {filtered.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No subscriptions in this view.</Text>
+            <Text style={styles.emptyIcon}>✂️</Text>
+            <Text style={styles.emptyTitle}>Kill List is Empty</Text>
+            <Text style={styles.emptyText}>
+              Add subscriptions to track recurring costs and kill dead weight.
+            </Text>
+            <TouchableOpacity style={styles.emptyActionBtn} onPress={onAddPress}>
+              <Text style={styles.emptyActionBtnText}>+ Add Subscription</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           filtered.map((sub) => (
@@ -88,9 +96,32 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
     alignItems: 'center',
   },
+  emptyIcon: {
+    fontSize: 40,
+    marginBottom: 10,
+  },
+  emptyTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '800',
+    marginBottom: 6,
+  },
   emptyText: {
     color: '#71717A',
     fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  emptyActionBtn: {
+    backgroundColor: '#00FFA3',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  emptyActionBtnText: {
+    color: '#000000',
+    fontSize: 13,
+    fontWeight: '900',
   },
 });
 

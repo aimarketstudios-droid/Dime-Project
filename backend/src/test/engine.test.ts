@@ -33,8 +33,22 @@ test('SubscriptionDetector: Rejects random one-off transactions (Uber, Starbucks
 });
 
 test('KillSwitchService: Executes 100% FREE cancellation without payment methods or fees', async () => {
-  const sub = db.subscriptions.get('sub_netflix_01')!;
-  assert.ok(sub);
+  const sub = {
+    id: 'sub_netflix_test',
+    userId: 'usr_demo_dime_01',
+    merchantName: 'Netflix',
+    category: 'Streaming' as const,
+    billingAmount: 19.99,
+    currency: 'USD',
+    billingCycle: 'monthly' as const,
+    confidenceScore: 0.99,
+    status: 'active' as const,
+    daysInactive: 45,
+    cancellationMethod: 'headless_portal' as const,
+    nextBillingDate: '2026-12-01',
+    createdAt: new Date().toISOString(),
+  };
+  db.subscriptions.set(sub.id, sub);
 
   const job = await KillSwitchService.executeKill(sub.id, 'usr_demo_dime_01');
 

@@ -53,88 +53,34 @@ export const DimeApi = {
       if (!res.ok) throw new Error('Failed to fetch subscriptions');
       return await res.json();
     } catch {
-      // Fallback local mock data for zero-config offline mode
+      // Clean zeroed fallback when offline
       return {
         metrics: {
-          totalMonthlyBleed: 136.91,
-          projectedAnnualBleed: 1642.92,
-          deadSubscriptionsCount: 4,
-          potentialAnnualSavings: 1439.04,
+          totalMonthlyBleed: 0,
+          projectedAnnualBleed: 0,
+          deadSubscriptionsCount: 0,
+          potentialAnnualSavings: 0,
         },
-        subscriptions: [
-          {
-            id: 'sub_netflix_01',
-            userId: 'usr_demo_01',
-            merchantName: 'Netflix Standard',
-            category: 'Streaming',
-            billingAmount: 19.99,
-            currency: 'USD',
-            billingCycle: 'monthly',
-            confidenceScore: 0.98,
-            status: 'active',
-            daysInactive: 42,
-            cancellationMethod: 'headless_portal',
-            nextBillingDate: '2026-11-12',
-          },
-          {
-            id: 'sub_planet_fitness_02',
-            userId: 'usr_demo_01',
-            merchantName: 'Planet Fitness Black Card',
-            category: 'Fitness',
-            billingAmount: 24.99,
-            currency: 'USD',
-            billingCycle: 'monthly',
-            confidenceScore: 0.95,
-            status: 'active',
-            daysInactive: 78,
-            cancellationMethod: 'legal_notice',
-            nextBillingDate: '2026-11-19',
-          },
-          {
-            id: 'sub_adobe_03',
-            userId: 'usr_demo_01',
-            merchantName: 'Adobe Creative Cloud',
-            category: 'Software',
-            billingAmount: 54.99,
-            currency: 'USD',
-            billingCycle: 'monthly',
-            confidenceScore: 0.99,
-            status: 'active',
-            daysInactive: 65,
-            cancellationMethod: 'headless_portal',
-            nextBillingDate: '2026-11-16',
-          },
-          {
-            id: 'sub_chegg_04',
-            userId: 'usr_demo_01',
-            merchantName: 'Chegg Study Pack',
-            category: 'Software',
-            billingAmount: 19.95,
-            currency: 'USD',
-            billingCycle: 'monthly',
-            confidenceScore: 0.94,
-            status: 'active',
-            daysInactive: 95,
-            cancellationMethod: 'headless_portal',
-            nextBillingDate: '2026-11-23',
-          },
-          {
-            id: 'sub_spotify_05',
-            userId: 'usr_demo_01',
-            merchantName: 'Spotify Premium Family',
-            category: 'Streaming',
-            billingAmount: 16.99,
-            currency: 'USD',
-            billingCycle: 'monthly',
-            confidenceScore: 0.99,
-            status: 'active',
-            daysInactive: 2,
-            cancellationMethod: 'direct_mandate',
-            nextBillingDate: '2026-11-30',
-          },
-        ],
+        subscriptions: [],
       };
     }
+  },
+
+  // Add custom or real subscription manually
+  async addSubscription(data: {
+    merchantName: string;
+    category: string;
+    billingAmount: number;
+    billingCycle: string;
+    daysInactive: number;
+  }): Promise<{ success: boolean; subscription: Subscription }> {
+    const res = await fetch(`${API_BASE_URL}/subscriptions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Failed to add subscription');
+    return await res.json();
   },
 
   // 100% Free Trigger - No payment details required

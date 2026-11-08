@@ -8,6 +8,7 @@ interface Props {
   subscriptions: Subscription[];
   onKillPress: (sub: Subscription) => void;
   onConnectBank: () => void;
+  onAddPress: () => void;
   onOpenFeedback: () => void;
   onRefresh: () => void;
   refreshing: boolean;
@@ -18,6 +19,7 @@ export const DashboardScreen: React.FC<Props> = ({
   subscriptions,
   onKillPress,
   onConnectBank,
+  onAddPress,
   onOpenFeedback,
   onRefresh,
   refreshing,
@@ -82,15 +84,33 @@ export const DashboardScreen: React.FC<Props> = ({
 
       {/* Quick Action Subscriptions List */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Your Recurring Subscriptions</Text>
-        <TouchableOpacity onPress={onConnectBank}>
-          <Text style={styles.connectBankText}>+ Link Bank</Text>
-        </TouchableOpacity>
+        <Text style={styles.sectionTitle}>Your Subscriptions</Text>
+        <View style={styles.headerButtonsRow}>
+          <TouchableOpacity onPress={onAddPress} style={styles.addBtn}>
+            <Text style={styles.addBtnText}>+ Add</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onConnectBank} style={styles.linkBtn}>
+            <Text style={styles.connectBankText}>+ Link Bank</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {subscriptions.map((sub) => (
-        <SubscriptionCard key={sub.id} subscription={sub} onKillPress={onKillPress} />
-      ))}
+      {subscriptions.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>💳</Text>
+          <Text style={styles.emptyTitle}>No Subscriptions Tracked Yet</Text>
+          <Text style={styles.emptySubtitle}>
+            Tap "+ Add" to add your subscriptions manually, or "+ Link Bank" to scan your accounts.
+          </Text>
+          <TouchableOpacity style={styles.emptyActionButton} onPress={onAddPress}>
+            <Text style={styles.emptyActionButtonText}>+ Add Your First Subscription</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        subscriptions.map((sub) => (
+          <SubscriptionCard key={sub.id} subscription={sub} onKillPress={onKillPress} />
+        ))
+      )}
     </ScrollView>
   );
 };
@@ -250,8 +270,69 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   connectBankText: {
-    color: '#00FFA3',
+    color: '#A1A1AA',
     fontWeight: '700',
+    fontSize: 12,
+  },
+  headerButtonsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  addBtn: {
+    backgroundColor: '#00FFA3',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  addBtnText: {
+    color: '#000000',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  linkBtn: {
+    backgroundColor: '#18181B',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#27272A',
+  },
+  emptyContainer: {
+    backgroundColor: '#18181B',
+    borderRadius: 20,
+    padding: 32,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#27272A',
+    marginVertical: 10,
+  },
+  emptyIcon: {
+    fontSize: 36,
+    marginBottom: 10,
+  },
+  emptyTitle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+    marginBottom: 6,
+  },
+  emptySubtitle: {
+    color: '#71717A',
     fontSize: 13,
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 18,
+  },
+  emptyActionButton: {
+    backgroundColor: '#00FFA3',
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  emptyActionButtonText: {
+    color: '#000000',
+    fontSize: 13,
+    fontWeight: '900',
   },
 });
